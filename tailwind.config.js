@@ -9,7 +9,12 @@ module.exports = {
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      extend: {
+        opacity: ["disabled"],
+        cursor: ["disabled"],
+      },
+    },
   },
   plugins: [],
 }

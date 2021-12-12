@@ -33,17 +33,18 @@ export default function Web3Provider({ children }) {
 
 
   const _web3Api = useMemo(() => {
+    const { web3, provider } = web3Api;
     return {
       ...web3Api,
-      isWeb3Loaded: web3Api.web3 != null,
-      hooks: setupHooks(web3Api.web3),
+      isWeb3Loaded: web3 != null,
+      getHooks: () => setupHooks(web3),
       connect: async () => {
-        if (!web3Api.provider) {
+        if (!provider) {
           console.error("please install metamask!");
           return;
         }
         try {
-          await web3Api.provider.request({ method: 'eth_requestAccounts' })
+          await provider.request({ method: 'eth_requestAccounts' })
           console.log('Connected to web3');
         } catch (error) {
           console.error('Cannot connect to account');
@@ -63,3 +64,8 @@ export function useWeb3() {
   return useContext(Web3Context)
 }
 
+
+export function useHooks(cb) {
+  const { getHooks } = useWeb3()
+  return cb(getHooks())
+}
